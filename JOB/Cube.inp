@@ -39,47 +39,47 @@
 ** ------------------------------------------------- ** SOLID SECTION **
 **                                                   *******************
 **
-** ------------------------------------- ** MATERIAL: AMAT_ELASTICITY **
 **
-*MATERIAL, NAME=AMAT_ELASTICITY
+** ------------------------------- ** MATERIAL: VUMAT_C **
+**
+*MATERIAL, NAME=VUMAT_C
 *DENSITY
-1.
-*ELASTIC
-1., 0.1
-**
-** ------------------------------- ** MATERIAL: UMAT_C_ELASTICITY_ISO **
-**
-*MATERIAL, NAME=UMAT_C_ELASTICITY_ISO
-*DENSITY
-1.
-*USER MATERIAL, TYPE=MECHANICAL, CONSTANTS=2
-1., 0.1
+1e-9
+*USER MATERIAL, TYPE=MECHANICAL, CONSTANTS=10
+500,500,0,0.05,6.6,1.07,3e5,1.4,
+0,1e6
+*ORIENTATION, NAME=ORI-1
+1,0,0,0,1,0
 **
 ** ------------------------------------------------- ** SOLID SECTION **
 **
 ** *SOLID SECTION, ELSET=ELEM, MATERIAL=AMAT_ELASTICITY
-*SOLID SECTION, ELSET=ELEM, MATERIAL=UMAT_C_ELASTICITY_ISO
+*SOLID SECTION, ELSET=ELEM, MATERIAL=VUMAT_C, ORIENTATION=ORI-1
+** ------------------------------- ** BOUNDARY CONDITIONS = SYMETRIES **
+**
+*Amplitude, name=amp-1
+0,0
+1,1
+*BOUNDARY
+NODES_XMIN, 1, 1
+NODES_YMIN, 2, 2
+NODES_ZMIN, 3, 3
 **                                                            **********
 ** ---------------------------------------------------------- ** STEP **
 **                                                            **********
 **
 ** ---------------------------------------------------- ** BEGIN STEP **
 **
-*STEP
-*STATIC
-1e-2, 1., , 1e-2
+*STEP, NAME=STEP-1, NLGEOM=YES
+*DYNAMIC, EXPLICIT
+,1.,,
 **
-** ------------------------------- ** BOUNDARY CONDITIONS = SYMETRIES **
-**
-*BOUNDARY
-NODES_XMIN, 1, 1
-NODES_YMIN, 2, 2
-NODES_ZMIN, 3, 3
+
 **
 ** ------------------------------- ** BOUNDARY CONDITIONS = TRACTIONS **
 **
-*BOUNDARY
-NODES_XMAX, 1, 1, +0.10
+*BOUNDARY, AMPLITUDE=AMP-1
+NODES_XMAX, 1, 1, 0.10
 **
 ** ------------------------------------------------ ** OUTPUT OPTIONS **
 **
